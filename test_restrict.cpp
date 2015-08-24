@@ -19,6 +19,12 @@ const int N = 1024;
 __attribute__((noinline))
 void
 op(Wrapper a, Wrapper b, Wrapper c) {
+	#ifdef __clang
+	  #pragma clang loop vectorize(enable)
+    #pragma clang loop interleave(enable)
+	#else
+	  #pragma omp simd
+  #endif
 	for (int i = 0; i < N; ++i) {
 		c.a [i] += a.a[i] * b.a[i];
 	}
